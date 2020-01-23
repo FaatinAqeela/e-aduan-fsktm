@@ -17,13 +17,13 @@ class _LogMasukState extends State<LogMasuk> {
   final _key = new GlobalKey<FormState>();
 
   logMasuk() async {
-    var url = "https://e-aduanuthm.000webhostapp.com/logmasuk.php";
+    var url = "https://e-aduanfsktm.000webhostapp.com/logmasuk.php";
     //var url = "http://10.0.2.2/E-Aduan/logmasuk.php";
     final response = await http.post(url, body: {
       "id_pengguna": idpengguna.text.toLowerCase(),
       "katalaluan": katalaluan.text,
     });
-    var datauser = json.decode(response.body);
+    var datauser = jsonDecode(response.body);
 
     if (datauser.length == 0) {
       setState(() {
