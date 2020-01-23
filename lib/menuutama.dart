@@ -2,8 +2,9 @@ import 'package:eaduanfsktm/borangaduan.dart';
 import 'package:flutter/material.dart';
 
 class MenuUtama extends StatelessWidget {
-  final idpengguna, namapenuh,kategoripengguna;
-  MenuUtama({Key key, this.idpengguna, this.namapenuh,this.kategoripengguna}) : super(key: key);
+  final idpengguna, namapenuh, kategoripengguna;
+  MenuUtama({Key key, this.idpengguna, this.namapenuh, this.kategoripengguna})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,46 @@ class MenuUtama extends StatelessWidget {
         centerTitle: true,
         title: Text("MENU UTAMA"),
       ),
-      drawer: myDrawer(),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: new Text(
+                "${this.namapenuh}".toUpperCase(),
+                style: new TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                ),
+              ),
+              accountEmail: new Text("${this.idpengguna}".toUpperCase()),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: NetworkImage(
+                    "https://thenypost.files.wordpress.com/2019/04/pet-sematary-cat-2a.jpg?quality=90&strip=all&w=1054&h=702&crop=1"),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text("Profil"),
+            ),
+            ListTile(
+              leading: Icon(Icons.vpn_key),
+              title: Text("Tukar Kata Laluan"),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Tetapan"),
+            ),
+            ListTile(
+                leading: Icon(Icons.exit_to_app),
+                title: Text("Log Keluar"),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, "/logmasuk");
+                  //Navigator.of(context).pushReplacementNamed('/logmasuk');
+                }),
+          ],
+        ),
+      ), //myDrawer(),
       body: GridView.count(
         crossAxisCount: 2,
         crossAxisSpacing: 12.0,
@@ -21,8 +61,8 @@ class MenuUtama extends StatelessWidget {
         children: <Widget>[
           _buildTile(
             _menuutama(Icons.note_add, "Borang Aduan", Colors.lightBlueAccent),
-             onTap: () => Navigator.of(context)
-            .push(MaterialPageRoute(builder: (_) => BorangAduan())),
+            onTap: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => BorangAduan())),
           ),
           /* _buildTile(
             _menuutama(Icons.history, "Sejarah", Colors.grey),
@@ -110,47 +150,5 @@ class MenuUtama extends StatelessWidget {
                     print('Not set yet');
                   },
             child: child));
-  }
-
-  Drawer myDrawer() {
-    return new Drawer(
-      child: ListView(
-        children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: new Text(
-              "${this.namapenuh}".toUpperCase(),
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 17.0,
-              ),
-            ),
-            accountEmail: new Text("${this.idpengguna}".toUpperCase()),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  "https://thenypost.files.wordpress.com/2019/04/pet-sematary-cat-2a.jpg?quality=90&strip=all&w=1054&h=702&crop=1"),
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text("Profil"),
-          ),
-          ListTile(
-            leading: Icon(Icons.vpn_key),
-            title: Text("Tukar Kata Laluan"),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("Tetapan"),
-          ),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text("Log Keluar"),
-              onTap: () {
-                //Navigator.pushReplacementNamed(context, "/logmasuk");
-              }),
-        ],
-      ),
-    );
   }
 }
