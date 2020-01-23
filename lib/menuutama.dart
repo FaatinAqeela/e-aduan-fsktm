@@ -2,7 +2,7 @@ import 'package:eaduanfsktm/borangaduan.dart';
 import 'package:flutter/material.dart';
 
 class MenuUtama extends StatelessWidget {
-  var idpengguna, namapenuh,kategoripengguna;
+  final idpengguna, namapenuh,kategoripengguna;
   MenuUtama({Key key, this.idpengguna, this.namapenuh,this.kategoripengguna}) : super(key: key);
 
   @override
