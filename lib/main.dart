@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
       ),
       home: LogMasuk(),
       routes: <String, WidgetBuilder>{
-        //'/menuutama': (BuildContext context) => new MenuUtama(id_pengguna: datauser[0]['id_pengguna']),
         '/logmasuk': (BuildContext context) => new LogMasuk(),
       },
     );

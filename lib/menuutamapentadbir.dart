@@ -2,22 +2,22 @@ import 'package:eaduanfsktm/borangaduan.dart';
 import 'package:eaduanfsktm/sejarahaduan.dart';
 import 'package:flutter/material.dart';
 
-class MenuUtamaPengguna extends StatefulWidget {
+class MenuUtamaPentadbirSistem extends StatefulWidget {
   final idpengguna, namapenuh, kategoripengguna;
-  MenuUtamaPengguna(
+  MenuUtamaPentadbirSistem(
       {Key key, this.idpengguna, this.namapenuh, this.kategoripengguna})
       : super(key: key);
   @override
-  _MenuUtamaPenggunaState createState() => _MenuUtamaPenggunaState();
+  _MenuUtamaPentadbirSistemState createState() => _MenuUtamaPentadbirSistemState();
 }
 
-class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
+class _MenuUtamaPentadbirSistemState extends State<MenuUtamaPentadbirSistem> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("MENU UTAMA"),
+        title: Text("MENU UTAMA "),
       ),
       drawer: drawer(),
       body: GridView.count(
@@ -27,23 +27,28 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         children: <Widget>[
           _buildTile(
-            menuIcon(Icons.note_add, "Borang Aduan", Colors.lightBlueAccent),
+            menuIcon(Icons.note_add, "Juruteknik", Colors.lightBlueAccent),
+            //onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => BorangAduan())),
+          ),
+          _buildTile(
+            menuIcon(Icons.history, "Fasiliti", Colors.purple[300]),
+           // onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => SejarahAduan())),
+          ), /*
+          _buildTile(
+            menuutama(Icons.history, "Sejarah Aduan", Colors.greenAccent),
             onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => BorangAduan())),
+                .push(MaterialPageRoute(builder: (_) => TambahAduan())),
           ),
           _buildTile(
-            menuIcon(Icons.history, "Sejarah", Colors.purple[300]),
+            menuutama(Icons.settings, "Tetapan", Colors.blueGrey),
             onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => SejarahAduan())),
+                .push(MaterialPageRoute(builder: (_) => TambahAduan())),
           ),
           _buildTile(
-            menuIcon(Icons.settings, "Tetapan", Colors.blueGrey),
-            //onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TambahAduan())),
-          ),
-          _buildTile(
-            menuIcon(Icons.info, "Tentang Kami", Colors.blue),
-            //onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TambahAduan())),
-          ),
+            menuutama(Icons.info, "Tentang Kami", Colors.blue),
+            onTap: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (_) => TambahAduan())),
+          ),*/
         ],
       ),
     );

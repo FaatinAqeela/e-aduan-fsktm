@@ -1,3 +1,4 @@
+import 'package:eaduanfsktm/menuutamapentadbir.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -17,13 +18,13 @@ class _LogMasukState extends State<LogMasuk> {
   final _key = new GlobalKey<FormState>();
 
   logMasuk() async {
-    var url = "https://e-aduanfsktm.000webhostapp.com/logmasuk.php";
-    //var url = "http://10.0.2.2/E-Aduan/logmasuk.php";
+    //var url = "https://e-aduanfsktm.000webhostapp.com/logmasuk.php";
+    var url = "http://172.16.41.132/E-Aduan/logmasuk.php";
     final response = await http.post(url, body: {
       "id_pengguna": idpengguna.text.toLowerCase(),
       "katalaluan": katalaluan.text,
     });
-    var datauser = jsonDecode(response.body);
+    var datauser = json.decode(response.body);
 
     if (datauser.length == 0) {
       setState(() {
@@ -42,17 +43,63 @@ class _LogMasukState extends State<LogMasuk> {
             ]).show();
       });
     } else {
-      var route = new MaterialPageRoute(
-        builder: (BuildContext context) {
-          var menuUtama = new MenuUtama(
-              idpengguna: datauser[0]['id_pengguna'],
-              namapenuh: datauser[0]['namapenuh'],
-              kategoripengguna: datauser[0]['kategoripengguna'],
+      switch (datauser[0]['kategoripengguna']) {
+        case 'pelajar':
+        case 'staf':
+          var route = new MaterialPageRoute(
+            builder: (BuildContext context) {
+              var menuUtama = new MenuUtamaPengguna(
+                idpengguna: datauser[0]['id_pengguna'],
+                namapenuh: datauser[0]['namapenuh'],
+                kategoripengguna: datauser[0]['kategoripengguna'],
               );
-          return menuUtama;
-        },
-      );
-      Navigator.of(context).push(route);
+              return menuUtama;
+            },
+          );
+          Navigator.of(context).push(route);
+          break;
+        case 'pentadbirsistem':
+          var route = new MaterialPageRoute(
+            builder: (BuildContext context) {
+              var menuUtama = new MenuUtamaPentadbirSistem(
+                idpengguna: datauser[0]['id_pengguna'],
+                namapenuh: datauser[0]['namapenuh'],
+                kategoripengguna: datauser[0]['kategoripengguna'],
+              );
+              return menuUtama;
+            },
+          );
+          Navigator.of(context).push(route);
+          break;
+        case 'staf':
+          var route = new MaterialPageRoute(
+            builder: (BuildContext context) {
+              var menuUtama = new MenuUtamaPentadbirSistem(
+                idpengguna: datauser[0]['id_pengguna'],
+                namapenuh: datauser[0]['namapenuh'],
+                kategoripengguna: datauser[0]['kategoripengguna'],
+              );
+              return menuUtama;
+            },
+          );
+          Navigator.of(context).push(route);
+          break;
+        case 'pengurusmakmal':
+          var route = new MaterialPageRoute(
+            builder: (BuildContext context) {
+              var menuUtama = new MenuUtamaPentadbirSistem(
+                idpengguna: datauser[0]['id_pengguna'],
+                namapenuh: datauser[0]['namapenuh'],
+                kategoripengguna: datauser[0]['kategoripengguna'],
+              );
+              return menuUtama;
+            },
+          );
+          Navigator.of(context).push(route);
+          break;
+
+        default:
+      }
     }
   }
 
