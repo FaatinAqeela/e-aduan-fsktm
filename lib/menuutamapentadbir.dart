@@ -1,5 +1,3 @@
-import 'package:eaduanfsktm/borangaduan.dart';
-import 'package:eaduanfsktm/sejarahaduan.dart';
 import 'package:flutter/material.dart';
 
 class MenuUtamaPentadbirSistem extends StatefulWidget {
@@ -8,7 +6,8 @@ class MenuUtamaPentadbirSistem extends StatefulWidget {
       {Key key, this.idpengguna, this.namapenuh, this.kategoripengguna})
       : super(key: key);
   @override
-  _MenuUtamaPentadbirSistemState createState() => _MenuUtamaPentadbirSistemState();
+  _MenuUtamaPentadbirSistemState createState() =>
+      _MenuUtamaPentadbirSistemState();
 }
 
 class _MenuUtamaPentadbirSistemState extends State<MenuUtamaPentadbirSistem> {
@@ -17,7 +16,7 @@ class _MenuUtamaPentadbirSistemState extends State<MenuUtamaPentadbirSistem> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("MENU UTAMA "),
+        title: Text("MENU UTAMA"),
       ),
       drawer: drawer(),
       body: GridView.count(
@@ -32,23 +31,8 @@ class _MenuUtamaPentadbirSistemState extends State<MenuUtamaPentadbirSistem> {
           ),
           _buildTile(
             menuIcon(Icons.history, "Fasiliti", Colors.purple[300]),
-           // onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => SejarahAduan())),
-          ), /*
-          _buildTile(
-            menuutama(Icons.history, "Sejarah Aduan", Colors.greenAccent),
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => TambahAduan())),
+            // onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => SejarahAduan())),
           ),
-          _buildTile(
-            menuutama(Icons.settings, "Tetapan", Colors.blueGrey),
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => TambahAduan())),
-          ),
-          _buildTile(
-            menuutama(Icons.info, "Tentang Kami", Colors.blue),
-            onTap: () => Navigator.of(context)
-                .push(MaterialPageRoute(builder: (_) => TambahAduan())),
-          ),*/
         ],
       ),
     );
