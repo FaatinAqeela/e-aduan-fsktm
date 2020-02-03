@@ -70,7 +70,9 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
           ListTile(
             leading: Icon(Icons.person),
             title: Text("Profil"),
-            onTap: () {},
+            onTap: () {
+              //_lihatprofil();
+            },
           ),
           ListTile(
             leading: Icon(Icons.vpn_key),
@@ -155,5 +157,52 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
                     print('Not set yet');
                   },
             child: child));
+  }
+
+  void _lihatprofil() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: Padding(
+            padding: EdgeInsets.all(0),
+            child: Row(
+              children: <Widget>[
+                Image.asset(
+                  'images/logos.png',
+                  width: 30,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Nama : ${widget.namapenuh}.toUpperCase()',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    Text('"${widget.idpengguna}".toUpperCase()'),
+                    Text(''),
+                    Text('\u00a9 2019 '),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          content: new Text(
+              "Congratulations, you have completed the registration process! You can login now with your login credentials."),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
