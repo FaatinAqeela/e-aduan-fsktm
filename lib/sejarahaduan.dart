@@ -108,16 +108,27 @@ class Disemak extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topCenter,
-      child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const ListTile(
-              title: Text('The Enchanted Nightingale'),
-              subtitle: Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
-            ),
-          ],
+      child: GestureDetector(
+        child: Card(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const ListTile(
+                title: Text(
+                  'R01-Makmal Pengaturcaraan',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                subtitle: Text('Komputer rosak'),
+              ),
+            ],
+          ),
         ),
+        onTap: () {
+          print('data aduan');
+        },
       ),
     );
   }
@@ -133,12 +144,17 @@ class Selesai extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const ListTile(
-              title: Text('The Enchanted Nightingale'),
-              subtitle: Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+              title: Text(
+                'R01-Makmal Pengaturcaraan',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Text('Komputer rosak'),
             ),
           ],
         ),
-        
       ),
     );
   }
@@ -154,8 +170,14 @@ class TidakSelesai extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const ListTile(
-              title: Text('The Enchanted Nightingale'),
-              subtitle: Text('Music by Julie Gable. Lyrics by Sidney Stein.'),
+              title: Text(
+                'R01-Makmal Pengaturcaraan',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: Text('Komputer rosak'),
             ),
           ],
         ),
