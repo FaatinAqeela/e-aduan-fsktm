@@ -49,6 +49,7 @@ class _LogMasukState extends State<LogMasuk> {
           var route = new MaterialPageRoute(
             builder: (BuildContext context) {
               var menuUtama = new MenuUtamaPengguna(
+                tajuk: 'MENU UTAMA',
                 idpengguna: datauser[0]['id_pengguna'],
                 namapenuh: datauser[0]['namapenuh'],
                 kategoripengguna: datauser[0]['kategoripengguna'],

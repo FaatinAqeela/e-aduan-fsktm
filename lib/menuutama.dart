@@ -3,9 +3,9 @@ import 'package:eaduanfsktm/sejarahaduan.dart';
 import 'package:flutter/material.dart';
 
 class MenuUtamaPengguna extends StatefulWidget {
-  final idpengguna, namapenuh, kategoripengguna;
+  final tajuk, idpengguna, namapenuh, kategoripengguna;
   MenuUtamaPengguna(
-      {Key key, this.idpengguna, this.namapenuh, this.kategoripengguna})
+      {Key key, this.tajuk,this.idpengguna, this.namapenuh, this.kategoripengguna, String title})
       : super(key: key);
   @override
   _MenuUtamaPenggunaState createState() => _MenuUtamaPenggunaState();
@@ -17,7 +17,7 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("MENU UTAMA"),
+        title: Text(widget.tajuk),
       ),
       drawer: drawer(),
       body: GridView.count(
