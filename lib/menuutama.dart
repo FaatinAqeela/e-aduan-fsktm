@@ -1,11 +1,17 @@
 import 'package:eaduanfsktm/borangaduan.dart';
+import 'package:eaduanfsktm/profil.dart';
 import 'package:eaduanfsktm/sejarahaduan.dart';
 import 'package:flutter/material.dart';
 
 class MenuUtamaPengguna extends StatefulWidget {
   final tajuk, idpengguna, namapenuh, kategoripengguna;
   MenuUtamaPengguna(
-      {Key key, this.tajuk,this.idpengguna, this.namapenuh, this.kategoripengguna, String title})
+      {Key key,
+      this.tajuk,
+      this.idpengguna,
+      this.namapenuh,
+      this.kategoripengguna,
+      String title})
       : super(key: key);
   @override
   _MenuUtamaPenggunaState createState() => _MenuUtamaPenggunaState();
@@ -71,6 +77,13 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
             leading: Icon(Icons.person),
             title: Text("Profil"),
             onTap: () {
+              Navigator.of(context).push(
+                new MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      new Profil("${widget.namapenuh}"),
+                ),
+              );
+
               //_lihatprofil();
             },
           ),
