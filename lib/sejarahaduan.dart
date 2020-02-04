@@ -106,7 +106,8 @@ class _SejarahAduanState extends State<SejarahAduan>
 class Disemak extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      alignment: Alignment.topCenter,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -125,7 +126,8 @@ class Disemak extends StatelessWidget {
 class Selesai extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      alignment: Alignment.topCenter,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -136,6 +138,7 @@ class Selesai extends StatelessWidget {
             ),
           ],
         ),
+        
       ),
     );
   }
@@ -144,7 +147,8 @@ class Selesai extends StatelessWidget {
 class TidakSelesai extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
+      alignment: Alignment.topCenter,
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
