@@ -1,3 +1,4 @@
+import 'package:eaduanfsktm/profil.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends Drawer {
@@ -26,12 +27,12 @@ class CustomDrawer extends Drawer {
               leading: Icon(Icons.person),
               title: Text("Profil"),
               onTap: () {
-                // Navigator.of(context).push(
-                //   new MaterialPageRoute(
-                //     builder: (BuildContext context) =>
-                //         new Profil("${widget.namapenuh}"),
-                //   ),
-                // );
+                Navigator.of(context).push(
+                  new MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        new Profil(this.namapenuh),
+                  ),
+                );
 
                 //_lihatprofil();
               },
