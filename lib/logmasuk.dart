@@ -17,7 +17,7 @@ class _LogMasukState extends State<LogMasuk> {
   TextEditingController katalaluan = new TextEditingController();
   final _key = new GlobalKey<FormState>();
 
-  logMasuk() async {
+  Future<List> logMasuk() async {
     //var url = "https://e-aduanfsktm.000webhostapp.com/logmasuk.php";
     var url = "http://172.16.41.132/E-Aduan/logmasuk.php";
     final response = await http.post(url, body: {
@@ -102,6 +102,7 @@ class _LogMasukState extends State<LogMasuk> {
         default:
       }
     }
+    return datauser;
   }
 
   @override
