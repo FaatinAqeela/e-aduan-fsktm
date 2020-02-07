@@ -1,5 +1,5 @@
 import 'package:eaduanfsktm/borangaduan.dart';
-import 'package:eaduanfsktm/profil.dart';
+import 'package:eaduanfsktm/drawer.dart';
 import 'package:eaduanfsktm/sejarahaduan.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
         centerTitle: true,
         title: Text(widget.tajuk),
       ),
-      drawer: drawer(),
+      drawer: CustomDrawer("${widget.idpengguna}","${widget.namapenuh}"),
       body: GridView.count(
         crossAxisCount: 2,
         crossAxisSpacing: 12.0,
@@ -55,59 +55,6 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
     );
   }
 
-  Widget drawer() {
-    return Drawer(
-      child: ListView(
-        children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: new Text(
-              "${widget.namapenuh}".toUpperCase(),
-              style: new TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 17.0,
-              ),
-            ),
-            accountEmail: new Text("${widget.idpengguna}".toUpperCase()),
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  "https://thenypost.files.wordpress.com/2019/04/pet-sematary-cat-2a.jpg?quality=90&strip=all&w=1054&h=702&crop=1"),
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.person),
-            title: Text("Profil"),
-            onTap: () {
-              Navigator.of(context).push(
-                new MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      new Profil("${widget.namapenuh}"),
-                ),
-              );
-
-              //_lihatprofil();
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.vpn_key),
-            title: Text("Tukar Kata Laluan"),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("Tetapan"),
-            onTap: () {},
-          ),
-          ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text("Log Keluar"),
-              onTap: () {
-                //Navigator.pushReplacementNamed(context, "/logmasuk");
-                Navigator.of(context).pushReplacementNamed('/logmasuk');
-              }),
-        ],
-      ),
-    );
-  }
 
   Material menuIcon(IconData icon, String tajuk, Color color) {
     return Material(
