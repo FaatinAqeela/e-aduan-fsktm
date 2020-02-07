@@ -25,7 +25,7 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
         centerTitle: true,
         title: Text(widget.tajuk),
       ),
-      drawer: CustomDrawer("${widget.idpengguna}","${widget.namapenuh}"),
+      drawer: CustomDrawer("${widget.idpengguna}", "${widget.namapenuh}"),
       body: GridView.count(
         crossAxisCount: 2,
         crossAxisSpacing: 12.0,
@@ -54,7 +54,6 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
       ),
     );
   }
-
 
   Material menuIcon(IconData icon, String tajuk, Color color) {
     return Material(
@@ -106,17 +105,18 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
 
   Widget _buildTile(Widget child, {Function() onTap}) {
     return Material(
-        elevation: 14.0,
-        borderRadius: BorderRadius.circular(12.0),
-        shadowColor: Color(0x802196F3),
-        child: InkWell(
-            // Do onTap() if it isn't null, otherwise do print()
-            onTap: onTap != null
-                ? () => onTap()
-                : () {
-                    print('Not set yet');
-                  },
-            child: child));
+      elevation: 14.0,
+      borderRadius: BorderRadius.circular(12.0),
+      shadowColor: Color(0x802196F3),
+      child: InkWell(
+        // Do onTap() if it isn't null, otherwise do print()
+        onTap: onTap != null
+            ? () => onTap()
+            : () {
+                print('Not set yet');
+              },
+        child: child,
+      ),
+    );
   }
-
 }

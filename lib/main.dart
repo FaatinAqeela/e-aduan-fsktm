@@ -1,3 +1,4 @@
+import 'package:eaduanfsktm/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'logmasuk.dart';
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blueGrey,
       ),
-      home: LogMasuk(),
+      home: SplashScreen(),
       routes: <String, WidgetBuilder>{
         '/logmasuk': (BuildContext context) => new LogMasuk(),
       },
