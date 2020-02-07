@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Profil extends StatefulWidget {
   final namapenuh;
-  Profil(String s, {Key key, this.namapenuh, String title}) : super(key: key);
+  Profil(this.namapenuh);
 
   @override
   _ProfilState createState() => _ProfilState();
@@ -43,20 +43,6 @@ class _ProfilState extends State<Profil> {
           ),
         ],
       ),
-    );
-  }
-
-  Positioned myImages(String images) {
-    return Positioned(
-      top: 0.0,
-      left: 100.0,
-      child: Container(
-          width: 160.0,
-          height: 160.0,
-          decoration: new BoxDecoration(
-              shape: BoxShape.circle,
-              image: new DecorationImage(
-                  fit: BoxFit.fill, image: new NetworkImage(images)))),
     );
   }
 
