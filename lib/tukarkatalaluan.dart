@@ -17,13 +17,15 @@ class _TukarKataLaluanState extends State<TukarKataLaluan> {
       appBar: AppBar(
         title: Text("Tukar Kata Laluan"),
       ),
-      body: Center(
-        child: ListView(
-          padding: EdgeInsets.all(15.0),
-          children: <Widget>[
-            boxform(),
-            SizedBox(height: 10.0),
-          ],
+      body: SafeArea(
+        child: Center(
+          child: ListView(
+            padding: EdgeInsets.all(10.0),
+            children: <Widget>[
+              boxform(),
+              SizedBox(height: 10.0),
+            ],
+          ),
         ),
       ),
     );
@@ -87,14 +89,14 @@ class _TukarKataLaluanState extends State<TukarKataLaluan> {
                 ),
                 SizedBox(height: 15.0),
                 SizedBox(height: 10.0),
-                Container(
-                  height: 45.0,
-                  child: InkWell(
-                    onTap: () {
-                      if (_key.currentState.validate()) {
-                        tukar();
-                      }
-                    },
+                InkWell(
+                  onTap: () {
+                    if (_key.currentState.validate()) {
+                      tukar();
+                    }
+                  },
+                  child: Container(
+                    height: 45.0,
                     child: Material(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.blueAccent,
@@ -112,16 +114,16 @@ class _TukarKataLaluanState extends State<TukarKataLaluan> {
                   ),
                 ),
                 SizedBox(height: 10.0),
-                Container(
-                  height: 45.0,
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        katalaluanlama.clear();
-                        katalaluanbaru.clear();
-                        sahkankatalaluan.clear();
-                      });
-                    },
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      katalaluanlama.clear();
+                      katalaluanbaru.clear();
+                      sahkankatalaluan.clear();
+                    });
+                  },
+                  child: Container(
+                    height: 45.0,
                     child: Material(
                       borderRadius: BorderRadius.circular(10.0),
                       color: Colors.red,

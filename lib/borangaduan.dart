@@ -15,14 +15,16 @@ class _BorangAduanState extends State<BorangAduan> {
       appBar: AppBar(
         title: Text("Borang Aduan"),
       ),
-      body: Center(
-        child: ListView(
-          //shrinkWrap: true,
-          padding: EdgeInsets.all(15.0),
-          children: <Widget>[
-            aduanbox(),
-            SizedBox(height: 10.0),
-          ],
+      body: SafeArea(
+        child: Center(
+          child: ListView(
+            //shrinkWrap: true,
+            padding: EdgeInsets.all(15.0),
+            children: <Widget>[
+              aduanbox(),
+              SizedBox(height: 10.0),
+            ],
+          ),
         ),
       ),
     );
