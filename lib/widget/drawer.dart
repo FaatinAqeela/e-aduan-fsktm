@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:eaduanfsktm/api.dart';
+import 'package:eaduanfsktm/logmasuk.dart';
 import 'package:eaduanfsktm/profil.dart';
+import 'package:eaduanfsktm/tentangkami.dart';
+import 'package:eaduanfsktm/tetapan.dart';
 import 'package:eaduanfsktm/tukarkatalaluan.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -67,21 +70,69 @@ class CustomDrawer extends Drawer {
             ListTile(
               leading: Icon(Icons.settings),
               title: Text("Tetapan"),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  new MaterialPageRoute(
+                    builder: (BuildContext context) => new Tetapan(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.info),
               title: Text("Tentang Kami"),
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  new MaterialPageRoute(
+                    builder: (BuildContext context) => new TentangKami(),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.exit_to_app),
               title: Text("Log Keluar"),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/logmasuk');
+                showAlertDialog(context);
               },
             ),
           ],
         ),
       );
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Tidak"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Ya"),
+      onPressed: () {
+        Navigator.of(context).pushAndRemoveUntil(
+            new MaterialPageRoute(
+                builder: (BuildContext context) => LogMasuk()),
+            (Route<dynamic> route) => false);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Keluar dari aplikasi?"),
+      content: Text("Klik Ya untuk keluar!"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }
