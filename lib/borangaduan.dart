@@ -40,6 +40,7 @@ class _BorangAduanState extends State<BorangAduan> {
     if (response.statusCode == 200) {
       setState(
         () {
+          print(response.body);
           ruangfasiliti = RuangFasiliti.fromJson(json.decode(response.body));
           controllerruang_id =
               new TextEditingController(text: "${ruangfasiliti.ruang_id}");
