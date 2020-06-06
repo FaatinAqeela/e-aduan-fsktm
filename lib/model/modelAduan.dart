@@ -9,6 +9,7 @@ class Aduan {
   final String idpengguna;
   final String namaruang;
   final String namafasiliti;
+  final String alasan;
 
   Aduan({
     this.aduan_id,
@@ -20,7 +21,8 @@ class Aduan {
     this.status,
     this.idpengguna,
     this.namaruang,
-    this.namafasiliti
+    this.namafasiliti,
+    this.alasan,
   });
 
   factory Aduan.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class Aduan {
       idpengguna: json['idpengguna'],
       namaruang: json['namaruang'],
       namafasiliti: json['namafasiliti'],
+      alasan: json['alasan'],
     );
   }
 }
