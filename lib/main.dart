@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: ('E-Aduan FSKTM'),
       theme: ThemeData(
-        primaryColor: Colors.grey[400],
+        primaryColor:  Colors.blueGrey[300],
         scaffoldBackgroundColor: const Color(0xffeceff1),
       ),
       home: SplashScreen(),
