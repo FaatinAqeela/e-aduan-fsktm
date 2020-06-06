@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:eaduanfsktm/api.dart';
+import 'package:eaduanfsktm/sejarahaduan.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:eaduanfsktm/model/modelRuangFasiliti.dart';
@@ -25,8 +26,6 @@ class _BorangAduanState extends State<BorangAduan> {
   final _key = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  RuangFasiliti ruangfasiliti;
-
   TextEditingController controllerruang_id;
   TextEditingController controllerfasiliti_id;
   TextEditingController controller_namaruang;
@@ -34,15 +33,14 @@ class _BorangAduanState extends State<BorangAduan> {
   TextEditingController controllermaklumat = new TextEditingController();
 
   File _image;
+  RuangFasiliti ruangfasiliti = new RuangFasiliti();
 
   Future<RuangFasiliti> getruangfasiliti() async {
-    await http.get(BaseUrl.lihatruangfasiliti(widget.barcode)).then((response) {
-      if (jsonDecode(response.body) != null) {
-        setState(() {
-          ruangfasiliti = RuangFasiliti.fromJson(jsonDecode(response.body));
-        });
-
-        setState(() {
+    final response = await http.get(BaseUrl.lihatruangfasiliti(widget.barcode));
+    if (response.statusCode == 200) {
+      setState(
+        () {
+          ruangfasiliti = RuangFasiliti.fromJson(json.decode(response.body));
           controllerruang_id =
               new TextEditingController(text: "${ruangfasiliti.ruang_id}");
           controllerfasiliti_id =
@@ -51,225 +49,179 @@ class _BorangAduanState extends State<BorangAduan> {
               new TextEditingController(text: " ${ruangfasiliti.namaruang}");
           controller_namafasiliti =
               new TextEditingController(text: " ${ruangfasiliti.namafasiliti}");
-        });
-      }
-    });
+        },
+      );
+    }
+
     return ruangfasiliti;
   }
 
   @override
   void initState() {
-    getruangfasiliti();
     super.initState();
+    getruangfasiliti();
   }
 
+  bool isloading = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          key: _scaffoldKey,
-          appBar: AppBar(
-            title: Text("Borang Aduan"),
-          ),
-          body: ruangfasiliti == null
-              ? Container(
-                  child: AlertDialog(
-                    title: Text('Data tiada dalam sistem!'),
-                    content: const Text('Sila Cuba lagi..'),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('OK'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              : Container(
-                  child: Center(
-                    child: ListView(
-                      padding: EdgeInsets.all(15.0),
-                      children: <Widget>[
-                        aduanbox(),
-                        SizedBox(height: 10.0),
-                      ],
-                    ),
-                  ),
-                )),
-    );
-  }
-
-  Widget aduanbox() {
-    return Center(
-      child: Card(
-        elevation: 8.0,
-        child: Container(
-          padding: EdgeInsets.all(10.0),
-          child: Form(
-            key: _key,
-            child: Column(
-              children: <Widget>[
-                new Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        child: new TextFormField(
-                          controller: controllerfasiliti_id,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: "KOD FASILITI",
-                            // suffixIcon: GestureDetector(
-                            //   onTap: () {
-                            //     //scan();
-                            //   },
-                            // child: Column(
-                            //   children: <Widget>[
-                            //     Icon(
-                            //       MdiIcons.qrcode,
-                            //       size: 35,
-                            //       color: Colors.black,
-                            //     ),
-                            //     Text("Scan Me")
-                            //   ],
-                            // ),
-                            // ),
-                          ),
-                        ),
-                      ),
-                      flex: 2,
-                    ),
-                    SizedBox(width: 10.0),
-                    Expanded(
-                      child: Container(
-                        child: new TextFormField(
-                          controller: controller_namafasiliti,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: "NAMA FASILITI",
-                          ),
-                        ),
-                      ),
-                      flex: 2,
-                    ),
-                  ],
-                ),
-                new Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: Container(
-                        child: new TextFormField(
-                          controller: controllerruang_id,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: "KOD LOKASI",
-                          ),
-                        ),
-                      ),
-                      flex: 2,
-                    ),
-                    SizedBox(width: 10.0),
-                    Expanded(
-                      child: Container(
-                        child: new TextFormField(
-                          controller: controller_namaruang,
-                          readOnly: true,
-                          decoration: InputDecoration(
-                            labelText: "LOKASI",
-                          ),
-                        ),
-                      ),
-                      flex: 2,
-                    ),
-                  ],
-                ),
-                TextFormField(
-                  controller: controllermaklumat,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Masukkan Maklumat Kerosakan';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                      labelText: "MAKLUMAT",
-                      hintText: "Masukkan maklumat kerosakan"),
-                ),
-                SizedBox(height: 10.0),
-                Row(
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Icon(Icons.image),
-                      onPressed: getImageGallery,
-                    ),
-                    SizedBox(width: 5.0),
-                    RaisedButton(
-                      child: Icon(Icons.camera_alt),
-                      onPressed: getImageCamera,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 10.0),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: _image == null
-                      ? new Text("Tiada imej !")
-                      : new Image.file(_image),
-                ),
-                SizedBox(height: 10.0),
-                Container(
-                  height: 45.0,
-                  child: GestureDetector(
-                    onTap: () {
-                      if (_key.currentState.validate()) {
-                        tambahaduan(_image);
-                      }
-                    },
-                    child: Material(
-                      borderRadius: BorderRadius.circular(10.0),
-                      color: Colors.blueAccent,
-                      elevation: 7.0,
-                      child: Center(
-                        child: Text(
-                          'HANTAR',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Montserrat'),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text("Borang Aduan"),
         ),
+        body: isloading
+            ? new CircularProgressIndicator()
+            : new ListView(
+                children: <Widget>[
+                  aduanbox(),
+                  SizedBox(height: 10.0),
+                ],
+              ),
       ),
     );
   }
 
-  Future<void> _alert(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Not in stock'),
-          content: const Text('This item is no longer available'),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Ok'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+  Widget aduanbox() {
+    return Container(
+      child: Form(
+        key: _key,
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Card(
+            //color: Colors.black,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  new Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          child: new TextFormField(
+                            controller: controllerfasiliti_id,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: "KOD FASILITI",
+                            ),
+                          ),
+                        ),
+                        flex: 2,
+                      ),
+                      SizedBox(width: 10.0),
+                      Expanded(
+                        child: Container(
+                          child: new TextFormField(
+                            controller: controller_namafasiliti,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: "NAMA FASILITI",
+                            ),
+                          ),
+                        ),
+                        flex: 2,
+                      ),
+                    ],
+                  ),
+                  new Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          child: new TextFormField(
+                            controller: controllerruang_id,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: "KOD LOKASI",
+                            ),
+                          ),
+                        ),
+                        flex: 2,
+                      ),
+                      SizedBox(width: 10.0),
+                      Expanded(
+                        child: Container(
+                          child: new TextFormField(
+                            controller: controller_namaruang,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: "LOKASI",
+                            ),
+                          ),
+                        ),
+                        flex: 2,
+                      ),
+                    ],
+                  ),
+                  TextFormField(
+                    controller: controllermaklumat,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Masukkan Maklumat Kerosakan';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        labelText: "MAKLUMAT",
+                        hintText: "Masukkan maklumat kerosakan"),
+                  ),
+                  SizedBox(height: 10.0),
+                  Row(
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Icon(Icons.image),
+                        onPressed: getImageGallery,
+                      ),
+                      SizedBox(width: 5.0),
+                      RaisedButton(
+                        child: Icon(Icons.camera_alt),
+                        onPressed: getImageCamera,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10.0),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: _image == null
+                        ? new Text("Tiada imej !")
+                        : new Image.file(_image),
+                  ),
+                  SizedBox(height: 10.0),
+                  Container(
+                    height: 45.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        if (_key.currentState.validate()) {
+                          tambahaduan(_image);
+                        }
+                      },
+                      child: Material(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: Colors.blueAccent,
+                        elevation: 7.0,
+                        child: Center(
+                          child: Text(
+                            'HANTAR',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Montserrat'),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],
-        );
-      },
+          ),
+        ),
+      ),
     );
   }
 
@@ -340,6 +292,8 @@ class _BorangAduanState extends State<BorangAduan> {
             textColor: Colors.white,
             fontSize: 18.0,
           );
+          Navigator.of(this.context).push(CupertinoPageRoute(
+              builder: (BuildContext context) => SejarahAduan()));
         },
       );
     } else {

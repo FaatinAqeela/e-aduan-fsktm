@@ -15,12 +15,16 @@ class SplashScreenState extends State<SplashScreen>
   Animation<double> animation;
 
   startTime() async {
-    var _duration = new Duration(seconds:7);
+    var _duration = new Duration(seconds: 7);
     return new Timer(_duration, navigationPage);
   }
 
   void navigationPage() {
-    Navigator.of(context).pushReplacementNamed('/logmasuk');
+    Navigator.pushReplacementNamed(context, '/logmasuk');
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     new MaterialPageRoute(
+    //         builder: (BuildContext context) => new LogMasuk()),
+    //     (Route<dynamic> route) => false);
   }
 
   @override
@@ -45,30 +49,32 @@ class SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              CircularProgressIndicator(),
-              Padding(
-                padding: EdgeInsets.only(bottom: 30.0),
-              )
-            ],
-          ),
-          new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              new Image.asset(
-                'images/logos.png',
-                width: animation.value * 250,
-                height: animation.value * 250,
-              ),
-            ],
-          ),
-        ],
+      body: SafeArea(
+        child: Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            new Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CircularProgressIndicator(),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 30.0),
+                )
+              ],
+            ),
+            new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                new Image.asset(
+                  'images/logo.png',
+                  width: animation.value * 250,
+                  height: animation.value * 250,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

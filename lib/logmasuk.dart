@@ -1,11 +1,11 @@
-import 'package:eaduanfsktm/menuutamapentadbir.dart';
+import 'package:eaduanfsktm/api.dart';
+import 'package:eaduanfsktm/menuutama/menuutamapengguna.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
-
-import 'menuutama.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LogMasuk extends StatefulWidget {
   @override
@@ -17,18 +17,27 @@ class _LogMasukState extends State<LogMasuk> {
   TextEditingController katalaluan = new TextEditingController();
   final _key = new GlobalKey<FormState>();
 
+  DateTime currentBackPressTime;
+
+  check() {
+    final form = _key.currentState;
+    if (form.validate()) {
+      form.save();
+      logMasuk();
+    }
+  }
+
   Future<List> logMasuk() async {
-    //var url = "https://e-aduanfsktm.000webhostapp.com/logmasuk.php";
-    var url = "http://172.16.41.132/E-Aduan/logmasuk.php";
-    final response = await http.post(url, body: {
+    final response = await http.post(BaseUrl.logmasuk(), body: {
       "id_pengguna": idpengguna.text.toLowerCase(),
       "katalaluan": katalaluan.text,
     });
     var datauser = json.decode(response.body);
 
     if (datauser.length == 0) {
-      setState(() {
-        Alert(
+      setState(
+        () {
+          Alert(
             context: context,
             title: "Salah Nama Pengguna dan Kata Laluan",
             desc: "Sila cuba lagi.",
@@ -39,66 +48,64 @@ class _LogMasukState extends State<LogMasuk> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-              )
-            ]).show();
-      });
+              ),
+            ],
+          ).show();
+        },
+      );
     } else {
       switch (datauser[0]['kategoripengguna']) {
         case 'pelajar':
         case 'staf':
-          var route = new MaterialPageRoute(
-            builder: (BuildContext context) {
-              var menuUtama = new MenuUtamaPengguna(
-                tajuk: 'MENU UTAMA',
-                idpengguna: datauser[0]['id_pengguna'],
-                namapenuh: datauser[0]['namapenuh'],
-                kategoripengguna: datauser[0]['kategoripengguna'],
-              );
-              return menuUtama;
-            },
-          );
-          Navigator.of(context).push(route);
-          break;
-        case 'pentadbirsistem':
-          var route = new MaterialPageRoute(
-            builder: (BuildContext context) {
-              var menuUtama = new MenuUtamaPentadbirSistem(
-                idpengguna: datauser[0]['id_pengguna'],
-                namapenuh: datauser[0]['namapenuh'],
-                kategoripengguna: datauser[0]['kategoripengguna'],
-              );
-              return menuUtama;
-            },
-          );
-          Navigator.of(context).push(route);
-          break;
-        case 'staf':
-          var route = new MaterialPageRoute(
-            builder: (BuildContext context) {
-              var menuUtama = new MenuUtamaPentadbirSistem(
-                idpengguna: datauser[0]['id_pengguna'],
-                namapenuh: datauser[0]['namapenuh'],
-                kategoripengguna: datauser[0]['kategoripengguna'],
-              );
-              return menuUtama;
-            },
-          );
-          Navigator.of(context).push(route);
-          break;
-        case 'pengurusmakmal':
-          var route = new MaterialPageRoute(
-            builder: (BuildContext context) {
-              var menuUtama = new MenuUtamaPentadbirSistem(
-                idpengguna: datauser[0]['id_pengguna'],
-                namapenuh: datauser[0]['namapenuh'],
-                kategoripengguna: datauser[0]['kategoripengguna'],
-              );
-              return menuUtama;
-            },
-          );
-          Navigator.of(context).push(route);
+          Navigator.of(context).pushAndRemoveUntil(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      new MenuUtamaPengguna(datauser[0]['id_pengguna'])),
+              (Route<dynamic> route) => false);
+
           break;
 
+        // case 'juruteknik':
+        //   var route = new MaterialPageRoute(
+        //     builder: (BuildContext context) {
+        //       var menuUtama = new MenuUtamaPentadbirSistem(
+        //         idpengguna: datauser[0]['id_pengguna'],
+        //         namapenuh: datauser[0]['namapenuh'],
+        //         kategoripengguna: datauser[0]['kategoripengguna'],
+        //       );
+        //       return menuUtama;
+        //     },
+        //   );
+        //   Navigator.of(context).push(route);
+        //   break;
+
+        // case 'pentadbirsistem':
+        //   var route = new MaterialPageRoute(
+        //     builder: (BuildContext context) {
+        //       var menuUtama = new MenuUtamaPentadbirSistem(
+        //         idpengguna: datauser[0]['id_pengguna'],
+        //         namapenuh: datauser[0]['namapenuh'],
+        //         kategoripengguna: datauser[0]['kategoripengguna'],
+        //       );
+        //       return menuUtama;
+        //     },
+        //   );
+        //   Navigator.of(context).push(route);
+        //   break;
+
+        // case 'pengurusmakmal':
+        //   var route = new MaterialPageRoute(
+        //     builder: (BuildContext context) {
+        //       var menuUtama = new MenuUtamaPentadbirSistem(
+        //         idpengguna: datauser[0]['id_pengguna'],
+        //         namapenuh: datauser[0]['namapenuh'],
+        //         kategoripengguna: datauser[0]['kategoripengguna'],
+        //       );
+        //       return menuUtama;
+        //     },
+        //   );
+        //   Navigator.of(context).push(route);
+        //   break;
         default:
       }
     }
@@ -108,30 +115,46 @@ class _LogMasukState extends State<LogMasuk> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(15.0),
-          children: <Widget>[
-            paparLogo(),
-            logmasukbox(),
-            SizedBox(height: 10.0),
-            Row(
+      body: SafeArea(
+        child: WillPopScope(
+          onWillPop: _onBackPressed,
+          child: Center(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.all(15.0),
               children: <Widget>[
-                Expanded(
-                  child: Text(
-                    "Lupa kata laluan?",
-                    style: TextStyle(
-                      color: Colors.blueGrey,
+                paparLogo(),
+                logmasukbox(),
+                SizedBox(height: 10.0),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        "Lupa kata laluan?",
+                        style: TextStyle(
+                          color: Colors.blueGrey,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<bool> _onBackPressed() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      Fluttertoast.showToast(msg: "Press back again to exit app");
+      return Future.value(false);
+    }
+    return Future.value(true);
   }
 
   Widget paparLogo() {
@@ -142,7 +165,7 @@ class _LogMasukState extends State<LogMasuk> {
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 70.0,
-          child: Image.asset('images/logos.png'),
+          child: Image.asset('images/logo.png'),
         ),
       ),
     );
@@ -160,6 +183,7 @@ class _LogMasukState extends State<LogMasuk> {
               children: <Widget>[
                 TextFormField(
                   controller: idpengguna,
+                  keyboardType: TextInputType.text,
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Masukkan ID Pengguna';
@@ -174,6 +198,7 @@ class _LogMasukState extends State<LogMasuk> {
                 SizedBox(height: 15.0),
                 TextFormField(
                   controller: katalaluan,
+                  keyboardType: TextInputType.text,
                   obscureText: true,
                   validator: (value) {
                     if (value.isEmpty) {
@@ -192,7 +217,7 @@ class _LogMasukState extends State<LogMasuk> {
                   child: GestureDetector(
                     onTap: () {
                       if (_key.currentState.validate()) {
-                        logMasuk();
+                        check();
                       }
                     },
                     child: Material(

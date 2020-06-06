@@ -13,22 +13,22 @@ class _TukarKataLaluanState extends State<TukarKataLaluan> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: new Scaffold(
       appBar: AppBar(
         title: Text("Tukar Kata Laluan"),
       ),
-      body: SafeArea(
-        child: Center(
-          child: ListView(
-            padding: EdgeInsets.all(10.0),
-            children: <Widget>[
-              boxform(),
-              SizedBox(height: 10.0),
-            ],
-          ),
+      body: Center(
+        child: ListView(
+          padding: EdgeInsets.all(10.0),
+          children: <Widget>[
+            boxform(),
+            
+            SizedBox(height: 10.0),
+          ],
         ),
       ),
-    );
+    ));
   }
 
   Widget boxform() {

@@ -1,3 +1,4 @@
+import 'package:eaduanfsktm/sejarahaduan.dart';
 import 'package:eaduanfsktm/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'logmasuk.dart';
@@ -11,11 +12,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: ('E-Aduan FSKTM'),
       theme: ThemeData(
-        primaryColor: Colors.blueGrey,
+        primaryColor: Colors.grey[400],
+        scaffoldBackgroundColor: const Color(0xffeceff1),
       ),
       home: SplashScreen(),
       routes: <String, WidgetBuilder>{
-        '/logmasuk': (BuildContext context) => new LogMasuk(),
+        "/logmasuk": (context) => new LogMasuk(),
+        "/sejarahaduan": (context) => new SejarahAduan(),
       },
     );
   }
