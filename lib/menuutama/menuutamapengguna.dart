@@ -20,15 +20,6 @@ class MenuUtamaPengguna extends StatefulWidget {
 }
 
 class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
-  // signOut() {
-  //   setState(
-  //     () {
-  //       widget.signOut();
-  //     },
-  //   );
-  // }
-
-  
   String barcode = "";
 
   var logoImage = 'images/logo.png';
@@ -110,7 +101,7 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      //this.signOut();
+                                      showAlertDialog(context);
                                     },
                                     icon: Icon(
                                       Icons.lock_open,
@@ -310,5 +301,42 @@ class Item extends StatelessWidget {
         ]),
       ),
     );
+
+    showAlertDialog(BuildContext context) {
+      // set up the buttons
+      Widget cancelButton = FlatButton(
+        child: Text("Tidak"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+      Widget continueButton = FlatButton(
+        child: Text("Ya"),
+        onPressed: () {
+          Navigator.of(context).pushAndRemoveUntil(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) => LogMasuk()),
+              (Route<dynamic> route) => false);
+        },
+      );
+
+      // set up the AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: Text("Keluar dari aplikasi?"),
+        content: Text("Klik Ya untuk keluar!"),
+        actions: [
+          cancelButton,
+          continueButton,
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
   }
 }
