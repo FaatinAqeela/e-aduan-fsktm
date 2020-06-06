@@ -216,46 +216,152 @@ class _DetailsState extends State<Details> {
         title:
             new Text("${widget.list[widget.index]['namaruang']}".toUpperCase()),
       ),
-      body: new Container(
-        padding: EdgeInsets.all(20.0),
-        child: new Center(
-          child: new Column(
-            children: <Widget>[
-              new Text(
-                widget.list[widget.index]['namaruang'],
-                style: new TextStyle(fontSize: 20.0),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.all(8),
+                children: <Widget>[
+                  Image.network(
+                    BaseUrl.gambar() + widget.list[widget.index]['gambaraduan'],
+                    fit: BoxFit.cover,
+                    height: 180,
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    "${widget.list[widget.index]['tarikhaduan']}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 4),
+                    child: Divider(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Card(
+                        margin: new EdgeInsets.all(0.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      child: new TextFormField(
+                                        initialValue: widget.list[widget.index]
+                                            ['fasiliti_id'],
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          labelText: "KOD FASILITI",
+                                        ),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  SizedBox(width: 10.0),
+                                  Expanded(
+                                    child: Container(
+                                      child: new TextFormField(
+                                        initialValue: widget.list[widget.index]
+                                            ['namafasiliti'],
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          labelText: "NAMA FASILITI",
+                                        ),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                ],
+                              ),
+                              new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      child: new TextFormField(
+                                        initialValue: widget.list[widget.index]
+                                            ['ruang_id'],
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          labelText: "KOD LOKASI",
+                                        ),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  SizedBox(width: 10.0),
+                                  Expanded(
+                                    child: Container(
+                                      child: new TextFormField(
+                                        initialValue: widget.list[widget.index]
+                                            ['namaruang'],
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          labelText: "LOKASI",
+                                        ),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                ],
+                              ),
+                              TextFormField(
+                                initialValue: widget.list[widget.index]
+                                    ['maklumat'],
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                    labelText: "MAKLUMAT",
+                                    hintText: "Masukkan maklumat kerosakan"),
+                              ),
+                              SizedBox(height: 10.0),
+                              TextFormField(
+                                initialValue: widget.list[widget.index]
+                                    ['status'],
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  labelText: "Status",
+                                ),
+                              ),
+                              SizedBox(height: 10.0),
+                              Container(
+                                child: widget.list[widget.index]['status'] !=
+                                        'tidakselesai'
+                                    ? Container()
+                                    : TextFormField(
+                                        initialValue: widget.list[widget.index]
+                                            ['alasan'],
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          labelText: "Alasan",
+                                        ),
+                                      ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              new Text(
-                widget.list[widget.index]['namafasiliti'],
-                style: new TextStyle(fontSize: 20.0),
-              ),
-              new Text(
-                widget.list[widget.index]['status'],
-                style: new TextStyle(fontSize: 20.0),
-              ),
-
-              // new Row(
-              //   mainAxisAlignment: MainAxisAlignment.center  ,
-              //   children: <Widget>[
-
-              //     RaisedButton(
-              //       child: Text("EDIT"),
-              //       color: Colors.green,
-              //       onPressed: ()=> Navigator.of(context).push(
-              //         new MaterialPageRoute(
-              //           builder: (BuildContext context)=>new EditData(list:widget.list,index:widget.index),
-              //         )
-              //       ),
-              //     ),
-              //     RaisedButton(
-              //       child: Text("DELETE"),
-              //       color: Colors.red,
-              //       onPressed: ()=> confirm(),
-              //     ),
-              //   ],
-              // )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
