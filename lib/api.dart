@@ -1,6 +1,6 @@
 class BaseUrl {
-  //static String url = "http://172.20.10.3/E-Aduan";
-  static String url = "https://e-aduanfsktm.000webhostapp.com";
+  static String url = "http://172.20.10.3/E-Aduan";
+  //static String url = "https://e-aduanfsktm.000webhostapp.com";
 
   static String logmasuk() {
     return "$url/logmasuk.php";
@@ -28,5 +28,9 @@ class BaseUrl {
 
   static String lihataduantidakselesai() {
     return "$url/lihataduantidakselesai.php";
+  }
+
+  static String gambar() {
+    return "$url/aduanimages/";
   }
 }
