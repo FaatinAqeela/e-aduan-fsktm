@@ -31,16 +31,16 @@ class _BorangAduanState extends State<BorangAduan> {
   TextEditingController controller_namaruang;
   TextEditingController controller_namafasiliti;
   TextEditingController controllermaklumat = new TextEditingController();
-
+  bool condition = false;
   File _image;
   RuangFasiliti ruangfasiliti = new RuangFasiliti();
 
   Future<RuangFasiliti> getruangfasiliti() async {
     final response = await http.get(BaseUrl.lihatruangfasiliti(widget.barcode));
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 && json.decode(response.body) != null) {
       setState(
         () {
-          print(response.body);
+          print(json.decode(response.body));
           ruangfasiliti = RuangFasiliti.fromJson(json.decode(response.body));
           controllerruang_id =
               new TextEditingController(text: "${ruangfasiliti.ruang_id}");
@@ -52,8 +52,10 @@ class _BorangAduanState extends State<BorangAduan> {
               new TextEditingController(text: " ${ruangfasiliti.namafasiliti}");
         },
       );
-    }
-
+      setState(() {
+        condition = true;
+      });
+    } else {}
     return ruangfasiliti;
   }
 
@@ -63,7 +65,6 @@ class _BorangAduanState extends State<BorangAduan> {
     getruangfasiliti();
   }
 
-  bool isloading = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -72,14 +73,15 @@ class _BorangAduanState extends State<BorangAduan> {
         appBar: AppBar(
           title: Text("Borang Aduan"),
         ),
-        body: isloading
-            ? new CircularProgressIndicator()
-            : new ListView(
-                children: <Widget>[
-                  aduanbox(),
-                  SizedBox(height: 10.0),
-                ],
-              ),
+        body: Container(
+            child: condition
+                ? new ListView(
+                    children: <Widget>[
+                      aduanbox(),
+                      SizedBox(height: 10.0),
+                    ],
+                  )
+                : new CircularProgressIndicator()),
       ),
     );
   }
@@ -273,8 +275,9 @@ class _BorangAduanState extends State<BorangAduan> {
 
     var multipartFile = new http.MultipartFile("aduanimages", stream, length,
         filename: basename(_image.path));
-    request.fields['fasiliti_id'] = controllerfasiliti_id.text;
+
     request.fields['ruang_id'] = controllerruang_id.text;
+    request.fields['fasiliti_id'] = controllerfasiliti_id.text;
     request.fields['maklumat'] = controllermaklumat.text;
     request.fields['idpengguna'] = widget.idpengguna;
     request.files.add(multipartFile);
@@ -293,8 +296,9 @@ class _BorangAduanState extends State<BorangAduan> {
             textColor: Colors.white,
             fontSize: 18.0,
           );
-          Navigator.of(this.context).push(CupertinoPageRoute(
-              builder: (BuildContext context) => SejarahAduan()));
+          // Navigator.of(this.context).push(CupertinoPageRoute(
+          //     builder: (BuildContext context) => SejarahAduan()));
+          Navigator.pop(this.context);
         },
       );
     } else {
