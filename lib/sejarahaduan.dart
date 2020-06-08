@@ -165,8 +165,6 @@ class ItemList extends StatelessWidget {
               child: new ListTile(
                 title: Text(
                   '${list[i]['tarikhaduan']}',
-                  // new DateFormat("dd-MM-yyyy").format(list[i]['tarikhaduan']),
-
                   style: TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
