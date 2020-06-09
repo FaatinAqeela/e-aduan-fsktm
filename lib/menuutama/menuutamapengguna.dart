@@ -168,7 +168,8 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
                                     color: 0xffFD637B,
                                     nav: () => Navigator.of(context).push(
                                         MaterialPageRoute(
-                                            builder: (_) => SejarahAduan())),
+                                            builder: (_) => SejarahAduan(
+                                                snapshot.data.idpengguna))),
                                   ),
                                   Item(
                                     title: 'Tetapan',
@@ -228,7 +229,6 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
     } catch (e) {
       setState(() => this.barcode = 'Unknown error: $e');
     }
-  
   }
 
   showAlertDialog(BuildContext context) {

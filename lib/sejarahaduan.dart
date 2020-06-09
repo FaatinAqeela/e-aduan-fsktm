@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SejarahAduan extends StatefulWidget {
+  final String idpengguna;
+  SejarahAduan(this.idpengguna);
   @override
   _SejarahAduanState createState() => _SejarahAduanState();
 }
@@ -65,9 +67,9 @@ class _SejarahAduanState extends State<SejarahAduan>
         body: SafeArea(
           child: TabBarView(
             children: <Widget>[
-              Disemak(),
-              Selesai(),
-              TidakSelesai(),
+              Disemak(widget.idpengguna),
+              Selesai(widget.idpengguna),
+              TidakSelesai(widget.idpengguna),
             ],
             controller: _tabController,
           ),
@@ -77,9 +79,49 @@ class _SejarahAduanState extends State<SejarahAduan>
   }
 }
 
-class Disemak extends StatelessWidget {
+class Disemak extends StatefulWidget {
+  final String idpengguna;
+  Disemak(this.idpengguna);
+
+  @override
+  _DisemakState createState() => _DisemakState();
+}
+
+class _DisemakState extends State<Disemak> {
   Future<List> lihatAduan() async {
-    final response = await http.get(BaseUrl.lihataduandisemak());
+    final response =
+        await http.get(BaseUrl.lihataduandisemak(widget.idpengguna));
+    return json.decode(response.body);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List>(
+      future: lihatAduan(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) print(snapshot.error);
+
+        return snapshot.hasData
+            ? new ItemList(list: snapshot.data)
+            : new Center(
+                child: new CircularProgressIndicator(),
+              );
+      },
+    );
+  }
+}
+
+class Selesai extends StatefulWidget {
+  final String idpengguna;
+  Selesai(this.idpengguna);
+  @override
+  _SelesaiState createState() => _SelesaiState();
+}
+
+class _SelesaiState extends State<Selesai> {
+  Future<List> lihatAduan() async {
+    final response =
+        await http.get(BaseUrl.lihataduanselesai(widget.idpengguna));
     return json.decode(response.body);
   }
 
@@ -99,31 +141,17 @@ class Disemak extends StatelessWidget {
   }
 }
 
-class Selesai extends StatelessWidget {
-  Future<List> lihatAduan() async {
-    final response = await http.get(BaseUrl.lihataduanselesai());
-    return json.decode(response.body);
-  }
-
+class TidakSelesai extends StatefulWidget {
+  final String idpengguna;
+  TidakSelesai(this.idpengguna);
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List>(
-      future: lihatAduan(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) print(snapshot.error);
-        return snapshot.hasData
-            ? new ItemList(list: snapshot.data)
-            : new Center(
-                child: new CircularProgressIndicator(),
-              );
-      },
-    );
-  }
+  _TidakSelesaiState createState() => _TidakSelesaiState();
 }
 
-class TidakSelesai extends StatelessWidget {
+class _TidakSelesaiState extends State<TidakSelesai> {
   Future<List> lihatAduan() async {
-    final response = await http.get(BaseUrl.lihataduantidakselesai());
+    final response =
+        await http.get(BaseUrl.lihataduantidakselesai(widget.idpengguna));
     return json.decode(response.body);
   }
 
@@ -223,219 +251,11 @@ class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title:
-            new Text("${widget.list[widget.index]['namaruang']}".toUpperCase()),
-      ),
-      body: Container(
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  padding: EdgeInsets.all(8),
-                  children: <Widget>[
-                    Image.network(
-                      BaseUrl.gambar() +
-                          widget.list[widget.index]['gambaraduan'],
-                      fit: BoxFit.cover,
-                      height: 180,
-                    ),
-                    SizedBox(
-                      height: 4,
-                    ),
-                    Text(
-                      "${widget.list[widget.index]['tarikhaduan']}",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 4),
-                      child: Divider(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    Container(
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Card(
-                          margin: new EdgeInsets.all(0.0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                new Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Container(
-                                        child: new TextFormField(
-                                          initialValue:
-                                              widget.list[widget.index]
-                                                  ['fasiliti_id'],
-                                          readOnly: true,
-                                          decoration: InputDecoration(
-                                            labelText: "KOD FASILITI",
-                                          ),
-                                        ),
-                                      ),
-                                      flex: 2,
-                                    ),
-                                    SizedBox(width: 10.0),
-                                    Expanded(
-                                      child: Container(
-                                        child: new TextFormField(
-                                          initialValue:
-                                              widget.list[widget.index]
-                                                  ['namafasiliti'],
-                                          readOnly: true,
-                                          decoration: InputDecoration(
-                                            labelText: "NAMA FASILITI",
-                                          ),
-                                        ),
-                                      ),
-                                      flex: 2,
-                                    ),
-                                  ],
-                                ),
-                                new Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Container(
-                                        child: new TextFormField(
-                                          initialValue: widget
-                                              .list[widget.index]['ruang_id'],
-                                          readOnly: true,
-                                          decoration: InputDecoration(
-                                            labelText: "KOD LOKASI",
-                                          ),
-                                        ),
-                                      ),
-                                      flex: 2,
-                                    ),
-                                    SizedBox(width: 10.0),
-                                    Expanded(
-                                      child: Container(
-                                        child: new TextFormField(
-                                          initialValue: widget
-                                              .list[widget.index]['namaruang'],
-                                          readOnly: true,
-                                          decoration: InputDecoration(
-                                            labelText: "LOKASI",
-                                          ),
-                                        ),
-                                      ),
-                                      flex: 2,
-                                    ),
-                                  ],
-                                ),
-                                TextFormField(
-                                  initialValue: widget.list[widget.index]
-                                      ['maklumat'],
-                                  readOnly: true,
-                                  decoration: InputDecoration(
-                                      labelText: "MAKLUMAT",
-                                      hintText: "Masukkan maklumat kerosakan"),
-                                ),
-                                SizedBox(height: 10.0),
-                                widget.list[widget.index]['kategoripengguna'] !=
-                                            'juruteknik' &&
-                                        widget.list[widget.index]['status'] ==
-                                            'disemak'
-                                    ? Container(
-                                        padding: EdgeInsets.all(0),
-                                        child: DropDownFormField(
-                                          titleText: 'Status',
-                                          hintText: widget.list[widget.index]
-                                              ['status'],
-                                          value: _myActivity,
-                                          onSaved: (value) {
-                                            setState(() {
-                                              _myActivity = value;
-                                            });
-                                          },
-                                          onChanged: (value) {
-                                            setState(() {
-                                              _myActivity = value;
-                                            });
-                                          },
-                                          dataSource: [
-                                            {
-                                              "display": "Disemak",
-                                              "value": "disemak",
-                                            },
-                                            {
-                                              "display": "Selesai",
-                                              "value": "selesai",
-                                            },
-                                            {
-                                              "display": "Tidak Selesai",
-                                              "value": "tidakselesai",
-                                            },
-                                          ],
-                                          textField: 'display',
-                                          valueField: 'value',
-                                        ),
-                                      )
-                                    : TextFormField(
-                                        initialValue: widget.list[widget.index]
-                                            ['status'],
-                                        readOnly: true,
-                                        decoration: InputDecoration(
-                                          labelText: "Status",
-                                        ),
-                                      ),
-                                SizedBox(height: 10.0),
-                                widget.list[widget.index]['kategoripengguna'] !=
-                                            'juruteknik' &&
-                                        widget.list[widget.index]['status'] !=
-                                            'disemak'
-                                    ? Container()
-                                    : InkWell(
-                                        onTap: () {
-                                          _saveForm();
-                                        },
-                                        child: Container(
-                                          height: 45.0,
-                                          child: Material(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            color: Colors.blueAccent,
-                                            elevation: 7.0,
-                                            child: Center(
-                                              child: Text(
-                                                'KEMASKINI',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Montserrat'),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+        appBar: new AppBar(
+          title: new Text(
+              "${widget.list[widget.index]['namaruang']}".toUpperCase()),
         ),
-      ),
-    );
+        body: buildpengadu());
   }
 
   _saveForm() {
@@ -451,52 +271,385 @@ class _DetailsState extends State<Details> {
     }
   }
 
+  buildpengadu() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: <Widget>[
+        Expanded(
+          child: ListView(
+            padding: EdgeInsets.all(8),
+            children: <Widget>[
+              Image.network(
+                BaseUrl.gambar() + widget.list[widget.index]['gambaraduan'],
+                fit: BoxFit.cover,
+                height: 180,
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              Text(
+                "${widget.list[widget.index]['tarikhaduan']}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Divider(
+                  color: Colors.grey,
+                ),
+              ),
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Card(
+                    margin: new EdgeInsets.all(0.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                child: Container(
+                                  child: new TextFormField(
+                                    initialValue: widget.list[widget.index]
+                                        ['fasiliti_id'],
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+                                      labelText: "KOD FASILITI",
+                                    ),
+                                  ),
+                                ),
+                                flex: 2,
+                              ),
+                              SizedBox(width: 10.0),
+                              Expanded(
+                                child: Container(
+                                  child: new TextFormField(
+                                    initialValue: widget.list[widget.index]
+                                        ['namafasiliti'],
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+                                      labelText: "NAMA FASILITI",
+                                    ),
+                                  ),
+                                ),
+                                flex: 2,
+                              ),
+                            ],
+                          ),
+                          new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                child: Container(
+                                  child: new TextFormField(
+                                    initialValue: widget.list[widget.index]
+                                        ['ruang_id'],
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+                                      labelText: "KOD LOKASI",
+                                    ),
+                                  ),
+                                ),
+                                flex: 2,
+                              ),
+                              SizedBox(width: 10.0),
+                              Expanded(
+                                child: Container(
+                                  child: new TextFormField(
+                                    initialValue: widget.list[widget.index]
+                                        ['namaruang'],
+                                    readOnly: true,
+                                    decoration: InputDecoration(
+                                      labelText: "LOKASI",
+                                    ),
+                                  ),
+                                ),
+                                flex: 2,
+                              ),
+                            ],
+                          ),
+                          TextFormField(
+                            initialValue: widget.list[widget.index]['maklumat'],
+                            readOnly: true,
+                            decoration: InputDecoration(
+                                labelText: "MAKLUMAT",
+                                hintText: "Masukkan maklumat kerosakan"),
+                          ),
+                          SizedBox(height: 10.0),
+                          TextFormField(
+                            initialValue: widget.list[widget.index]['status'],
+                            readOnly: true,
+                            decoration: InputDecoration(
+                              labelText: "Status",
+                            ),
+                          ),
+                          SizedBox(height: 10.0),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  buildjuruteknik() {
+    return Container(
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.all(8),
+                children: <Widget>[
+                  Image.network(
+                    BaseUrl.gambar() + widget.list[widget.index]['gambaraduan'],
+                    fit: BoxFit.cover,
+                    height: 180,
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    "${widget.list[widget.index]['tarikhaduan']}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 4),
+                    child: Divider(
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Card(
+                        margin: new EdgeInsets.all(0.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      child: new TextFormField(
+                                        initialValue: widget.list[widget.index]
+                                            ['fasiliti_id'],
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          labelText: "KOD FASILITI",
+                                        ),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  SizedBox(width: 10.0),
+                                  Expanded(
+                                    child: Container(
+                                      child: new TextFormField(
+                                        initialValue: widget.list[widget.index]
+                                            ['namafasiliti'],
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          labelText: "NAMA FASILITI",
+                                        ),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                ],
+                              ),
+                              new Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      child: new TextFormField(
+                                        initialValue: widget.list[widget.index]
+                                            ['ruang_id'],
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          labelText: "KOD LOKASI",
+                                        ),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  SizedBox(width: 10.0),
+                                  Expanded(
+                                    child: Container(
+                                      child: new TextFormField(
+                                        initialValue: widget.list[widget.index]
+                                            ['namaruang'],
+                                        readOnly: true,
+                                        decoration: InputDecoration(
+                                          labelText: "LOKASI",
+                                        ),
+                                      ),
+                                    ),
+                                    flex: 2,
+                                  ),
+                                ],
+                              ),
+                              TextFormField(
+                                initialValue: widget.list[widget.index]
+                                    ['maklumat'],
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                    labelText: "MAKLUMAT",
+                                    hintText: "Masukkan maklumat kerosakan"),
+                              ),
+                              SizedBox(height: 10.0),
+                              widget.list[widget.index]['status'] != 'disemak'
+                                  ? TextFormField(
+                                      initialValue: widget.list[widget.index]
+                                          ['status'],
+                                      readOnly: true,
+                                      decoration: InputDecoration(
+                                        labelText: "Status",
+                                      ),
+                                    )
+                                  : DropDownFormField(
+                                      titleText: 'Status',
+                                      hintText: widget.list[widget.index]
+                                          ['status'],
+                                      value: _myActivity,
+                                      onSaved: (value) {
+                                        setState(() {
+                                          _myActivity = value;
+                                        });
+                                      },
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _myActivity = value;
+                                        });
+                                      },
+                                      dataSource: [
+                                        {
+                                          "display": "Disemak",
+                                          "value": "disemak",
+                                        },
+                                        {
+                                          "display": "Selesai",
+                                          "value": "selesai",
+                                        },
+                                        {
+                                          "display": "Tidak Selesai",
+                                          "value": "tidakselesai",
+                                        },
+                                      ],
+                                      textField: 'display',
+                                      valueField: 'value',
+                                    ),
+                              SizedBox(height: 10.0),
+                              widget.list[widget.index]['status'] != 'disemak'
+                                  ? Container()
+                                  : InkWell(
+                                      onTap: () {
+                                        _saveForm();
+                                      },
+                                      child: Container(
+                                        height: 45.0,
+                                        child: Material(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          color: Colors.blueAccent,
+                                          elevation: 7.0,
+                                          child: Center(
+                                            child: Text(
+                                              'KEMASKINI',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Montserrat'),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   void kemaskini() async {
     final response = await http.post(BaseUrl.kemaskinistatus(), body: {
       "aduan_id": widget.list[widget.index]['aduan_id'],
       "status": _myActivityResult,
     });
-    var datauser = json.decode(response.body);
+    //   var datauser = json.decode(response.body);
 
-    if (datauser.length == 0) {
-      setState(
-        () {
-          Alert(
-            context: context,
-            title: "Kemaskini Berjaya !",
-            desc: "Klik OK untuk keluar",
-            buttons: [
-              DialogButton(
-                child: Text("OK"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ).show();
-        },
-      );
-    } else {
-      setState(
-        () {
-          Alert(
-            context: context,
-            title: "Kemaskini Tidak Berjaya",
-            desc: "Sila cuba sekali lagi.",
-            buttons: [
-              DialogButton(
-                color: Colors.red,
-                child: Text("OK"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ).show();
-        },
-      );
-    }
+    //   if (datauser.length == 0) {
+    //     setState(
+    //       () {
+    //         Alert(
+    //           context: context,
+    //           title: "Kemaskini Berjaya !",
+    //           desc: "Klik OK untuk keluar",
+    //           buttons: [
+    //             DialogButton(
+    //               child: Text("OK"),
+    //               onPressed: () {
+    //                 Navigator.pop(context);
+    //               },
+    //             ),
+    //           ],
+    //         ).show();
+    //       },
+    //     );
+    //   } else {
+    //     setState(
+    //       () {
+    //         Alert(
+    //           context: context,
+    //           title: "Kemaskini Tidak Berjaya",
+    //           desc: "Sila cuba sekali lagi.",
+    //           buttons: [
+    //             DialogButton(
+    //               color: Colors.red,
+    //               child: Text("OK"),
+    //               onPressed: () {
+    //                 Navigator.pop(context);
+    //               },
+    //             ),
+    //           ],
+    //         ).show();
+    //       },
+    //     );
+    //   }
 
-    print(response.body);
+    //   print(response.body);
   }
 }
