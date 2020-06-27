@@ -35,6 +35,8 @@ dependencies:
   path_provider: "^0.4.1"
   image: "^2.0.4" 
   dropdown_formfield: ^0.1.2
+  autocomplete_textfield: ^1.6.4
+  
 
 
 

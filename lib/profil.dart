@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 class Profil extends StatefulWidget {
+  final idpengguna;
+  Profil(this.idpengguna);
   @override
   MapScreenState createState() => MapScreenState();
 }

@@ -1,18 +1,19 @@
-import 'package:eaduanfsktm/screenjuruteknik/senaraiaduan.dart';
+import 'package:eaduanfsktm/screenpentadbirsistem/juruteknikitem.dart';
 import 'package:eaduanfsktm/tentangkami.dart';
 import 'package:eaduanfsktm/tetapan.dart';
 import 'package:eaduanfsktm/widget/drawer.dart';
 import 'package:eaduanfsktm/widget/menuicon.dart';
 import 'package:flutter/material.dart';
 
-class MenuUtamaJuruteknik extends StatefulWidget {
+class MenuUtamaPengurusMakmal extends StatefulWidget {
   final String idpengguna;
-  MenuUtamaJuruteknik(this.idpengguna);
+  MenuUtamaPengurusMakmal(this.idpengguna);
   @override
-  _MenuUtamaJuruteknikState createState() => _MenuUtamaJuruteknikState();
+  _MenuUtamaPengurusMakmalState createState() =>
+      _MenuUtamaPengurusMakmalState();
 }
 
-class _MenuUtamaJuruteknikState extends State<MenuUtamaJuruteknik> {
+class _MenuUtamaPengurusMakmalState extends State<MenuUtamaPengurusMakmal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,18 +30,18 @@ class _MenuUtamaJuruteknikState extends State<MenuUtamaJuruteknik> {
           padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           children: <Widget>[
             MenuIcon(
-              Icons.list,
-              "Senarai Aduan",
-              Colors.lightBlueAccent,
-              () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => SenaraiAduan(widget.idpengguna))),
+              Icons.build,
+              "Juruteknik",
+              Colors.lime,
+              () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => JuruteknikItem())),
             ),
             MenuIcon(
               Icons.settings,
               "Tetapan",
               Colors.blueGrey,
-              () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => Tetapan(widget.idpengguna))),
+              () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => Tetapan(widget.idpengguna))),
             ),
             MenuIcon(
               Icons.info,
@@ -49,6 +50,7 @@ class _MenuUtamaJuruteknikState extends State<MenuUtamaJuruteknik> {
               () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (_) => TentangKami())),
             ),
+          
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:eaduanfsktm/api.dart';
+import 'package:eaduanfsktm/screenpengadu/sejarahaduan.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:eaduanfsktm/model/modelRuangFasiliti.dart';
@@ -194,14 +195,14 @@ class _BorangAduanState extends State<BorangAduan> {
                         : new Image.file(_image),
                   ),
                   SizedBox(height: 10.0),
-                  Container(
-                    height: 45.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        if (_key.currentState.validate()) {
-                          tambahaduan(_image);
-                        }
-                      },
+                  InkWell(
+                    onTap: () {
+                      if (_key.currentState.validate()) {
+                        tambahaduan(_image);
+                      }
+                    },
+                    child: Container(
+                      height: 45.0,
                       child: Material(
                         borderRadius: BorderRadius.circular(10.0),
                         color: Colors.blueAccent,
@@ -295,9 +296,10 @@ class _BorangAduanState extends State<BorangAduan> {
             textColor: Colors.white,
             fontSize: 18.0,
           );
-          // Navigator.of(this.context).push(CupertinoPageRoute(
-          //     builder: (BuildContext context) => SejarahAduan()));
-          Navigator.pop(this.context);
+          Navigator.of(this.context).pushReplacement(CupertinoPageRoute(
+              builder: (BuildContext context) =>
+                  SejarahAduan(widget.idpengguna)));
+          // Navigator.pop(this.context);
         },
       );
     } else {

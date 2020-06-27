@@ -1,8 +1,8 @@
 import 'package:eaduanfsktm/api.dart';
-import 'package:eaduanfsktm/borangaduan.dart';
+import 'package:eaduanfsktm/screenpengadu/borangaduan.dart';
 import 'package:eaduanfsktm/logmasuk.dart';
 import 'package:eaduanfsktm/model/modelPengguna.dart';
-import 'package:eaduanfsktm/sejarahaduan.dart';
+import 'package:eaduanfsktm/screenpengadu/sejarahaduan.dart';
 import 'package:eaduanfsktm/tetapan.dart';
 import 'package:eaduanfsktm/tentangkami.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,6 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
         statusBarIconBrightness: Brightness.dark));
 
     return Scaffold(
-      //drawer: CustomDrawer(idpengguna),
       body: SafeArea(
         child: _buildBody(context),
       ),
@@ -157,7 +156,7 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
                                 runSpacing: 17,
                                 children: [
                                   Item(
-                                    title: 'Scan QR',
+                                    title: 'Imbas QR',
                                     icon: 'images/scanqr.png',
                                     color: 0xff453658,
                                     nav: () => scan(),
@@ -167,25 +166,31 @@ class _MenuUtamaPenggunaState extends State<MenuUtamaPengguna> {
                                     icon: 'images/semakaduan.png',
                                     color: 0xffFD637B,
                                     nav: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (_) => SejarahAduan(
-                                                snapshot.data.idpengguna))),
+                                      MaterialPageRoute(
+                                        builder: (_) => SejarahAduan(
+                                            snapshot.data.id_pengguna),
+                                      ),
+                                    ),
                                   ),
                                   Item(
                                     title: 'Tetapan',
                                     icon: 'images/tetapan.png',
                                     color: 0xff21CDFF,
                                     nav: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (_) => Tetapan())),
+                                      MaterialPageRoute(
+                                        builder: (_) => Tetapan(snapshot.data.id_pengguna),
+                                      ),
+                                    ),
                                   ),
                                   Item(
                                     title: 'Tentang Kami',
                                     icon: 'images/tentangkami.png',
                                     color: 0xff7585F6,
                                     nav: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (_) => TentangKami())),
+                                      MaterialPageRoute(
+                                        builder: (_) => TentangKami(),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),

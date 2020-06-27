@@ -1,4 +1,3 @@
-import 'package:eaduanfsktm/sejarahaduan.dart';
 import 'package:eaduanfsktm/splashscreen.dart';
 import 'package:flutter/material.dart';
 import 'logmasuk.dart';
@@ -18,7 +17,6 @@ class MyApp extends StatelessWidget {
       home: SplashScreen(),
       routes: <String, WidgetBuilder>{
         "/logmasuk": (context) => new LogMasuk(),
-        "/sejarahaduan": (context) => new SejarahAduan(),
       },
     );
   }

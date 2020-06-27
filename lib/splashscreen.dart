@@ -21,10 +21,12 @@ class SplashScreenState extends State<SplashScreen>
 
   void navigationPage() {
     Navigator.pushReplacementNamed(context, '/logmasuk');
-    // Navigator.of(context).pushAndRemoveUntil(
-    //     new MaterialPageRoute(
-    //         builder: (BuildContext context) => new LogMasuk()),
-    //     (Route<dynamic> route) => false);
+  }
+
+  @override
+  dispose() {
+    animationController.dispose(); // you need this
+    super.dispose();
   }
 
   @override

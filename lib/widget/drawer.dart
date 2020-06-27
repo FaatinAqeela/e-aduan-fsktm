@@ -1,22 +1,17 @@
 import 'dart:convert';
-
+import 'package:http/http.dart' as http;
 import 'package:eaduanfsktm/api.dart';
 import 'package:eaduanfsktm/logmasuk.dart';
+import 'package:eaduanfsktm/model/modelPengguna.dart';
 import 'package:eaduanfsktm/profil.dart';
 import 'package:eaduanfsktm/tentangkami.dart';
 import 'package:eaduanfsktm/tetapan.dart';
 import 'package:eaduanfsktm/tukarkatalaluan.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class CustomDrawer extends Drawer {
   final idpengguna;
   CustomDrawer(this.idpengguna);
-
-  Future<List> lihatAduan() async {
-    final response = await http.get(BaseUrl.lihatpengguna(this.idpengguna));
-    return json.decode(response.body);
-  }
 
   @override
   Widget build(BuildContext context) => new Drawer(
@@ -30,9 +25,18 @@ class CustomDrawer extends Drawer {
                   fontWeight: FontWeight.bold,
                   fontSize: 17.0,
                   color: Colors.white,
+                  backgroundColor: Colors.grey[400],
                 ),
               ),
-              accountEmail: new Text(this.idpengguna.toUpperCase()),
+              accountEmail: new Text(
+                this.idpengguna.toUpperCase(),
+                style: new TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17.0,
+                  color: Colors.white,
+                  backgroundColor: Colors.grey,
+                ),
+              ),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
                     "https://thenypost.files.wordpress.com/2019/04/pet-sematary-cat-2a.jpg?quality=90&strip=all&w=1054&h=702&crop=1"),
@@ -51,7 +55,8 @@ class CustomDrawer extends Drawer {
               onTap: () {
                 Navigator.of(context).push(
                   new MaterialPageRoute(
-                    builder: (BuildContext context) => new Profil(),
+                    builder: (BuildContext context) =>
+                        new Profil(this.idpengguna),
                   ),
                 );
               },
@@ -62,7 +67,8 @@ class CustomDrawer extends Drawer {
               onTap: () {
                 Navigator.of(context).push(
                   new MaterialPageRoute(
-                    builder: (BuildContext context) => new TukarKataLaluan(),
+                    builder: (BuildContext context) =>
+                        new TukarKataLaluan(this.idpengguna),
                   ),
                 );
               },
@@ -73,7 +79,8 @@ class CustomDrawer extends Drawer {
               onTap: () {
                 Navigator.of(context).push(
                   new MaterialPageRoute(
-                    builder: (BuildContext context) => new Tetapan(),
+                    builder: (BuildContext context) =>
+                        new Tetapan(this.idpengguna),
                   ),
                 );
               },

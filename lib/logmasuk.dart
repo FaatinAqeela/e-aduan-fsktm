@@ -1,5 +1,8 @@
 import 'package:eaduanfsktm/api.dart';
+import 'package:eaduanfsktm/menuutama/menuutamajuruteknik.dart';
 import 'package:eaduanfsktm/menuutama/menuutamapengguna.dart';
+import 'package:eaduanfsktm/menuutama/menuutamapengurusmakmal.dart';
+import 'package:eaduanfsktm/menuutama/menuutamapentadbir.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -16,7 +19,7 @@ class _LogMasukState extends State<LogMasuk> {
   TextEditingController idpengguna = new TextEditingController();
   TextEditingController katalaluan = new TextEditingController();
   final _key = new GlobalKey<FormState>();
-
+  bool _obscureText = false;
   DateTime currentBackPressTime;
 
   check() {
@@ -65,47 +68,29 @@ class _LogMasukState extends State<LogMasuk> {
 
           break;
 
-        // case 'juruteknik':
-        //   var route = new MaterialPageRoute(
-        //     builder: (BuildContext context) {
-        //       var menuUtama = new MenuUtamaPentadbirSistem(
-        //         idpengguna: datauser[0]['id_pengguna'],
-        //         namapenuh: datauser[0]['namapenuh'],
-        //         kategoripengguna: datauser[0]['kategoripengguna'],
-        //       );
-        //       return menuUtama;
-        //     },
-        //   );
-        //   Navigator.of(context).push(route);
-        //   break;
+        case 'juruteknik':
+          Navigator.of(context).pushAndRemoveUntil(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      new MenuUtamaJuruteknik(datauser[0]['id_pengguna'])),
+              (Route<dynamic> route) => false);
+          break;
 
-        // case 'pentadbirsistem':
-        //   var route = new MaterialPageRoute(
-        //     builder: (BuildContext context) {
-        //       var menuUtama = new MenuUtamaPentadbirSistem(
-        //         idpengguna: datauser[0]['id_pengguna'],
-        //         namapenuh: datauser[0]['namapenuh'],
-        //         kategoripengguna: datauser[0]['kategoripengguna'],
-        //       );
-        //       return menuUtama;
-        //     },
-        //   );
-        //   Navigator.of(context).push(route);
-        //   break;
+        case 'pentadbirsistem':
+          Navigator.of(context).pushAndRemoveUntil(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      new MenuUtamaPentadbirSistem(datauser[0]['id_pengguna'])),
+              (Route<dynamic> route) => false);
+          break;
 
-        // case 'pengurusmakmal':
-        //   var route = new MaterialPageRoute(
-        //     builder: (BuildContext context) {
-        //       var menuUtama = new MenuUtamaPentadbirSistem(
-        //         idpengguna: datauser[0]['id_pengguna'],
-        //         namapenuh: datauser[0]['namapenuh'],
-        //         kategoripengguna: datauser[0]['kategoripengguna'],
-        //       );
-        //       return menuUtama;
-        //     },
-        //   );
-        //   Navigator.of(context).push(route);
-        //   break;
+        case 'pengurusmakmal':
+          Navigator.of(context).pushAndRemoveUntil(
+              new MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      new MenuUtamaPengurusMakmal(datauser[0]['id_pengguna'])),
+              (Route<dynamic> route) => false);
+          break;
         default:
       }
     }
@@ -199,7 +184,7 @@ class _LogMasukState extends State<LogMasuk> {
                 TextFormField(
                   controller: katalaluan,
                   keyboardType: TextInputType.text,
-                  obscureText: true,
+                  obscureText: !_obscureText,
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Masukkan kata laluan';
@@ -209,12 +194,25 @@ class _LogMasukState extends State<LogMasuk> {
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock),
                     labelText: "KATA LALUAN",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        _obscureText ? Icons.visibility : Icons.visibility_off,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible variable
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 10.0),
                 Container(
                   height: 45.0,
-                  child: GestureDetector(
+                  child: InkWell(
                     onTap: () {
                       if (_key.currentState.validate()) {
                         check();

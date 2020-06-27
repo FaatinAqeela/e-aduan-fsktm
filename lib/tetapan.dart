@@ -1,8 +1,12 @@
 import 'package:eaduanfsktm/logmasuk.dart';
 import 'package:eaduanfsktm/tukarkatalaluan.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 class Tetapan extends StatefulWidget {
+  final String idpengguna;
+  Tetapan(this.idpengguna);
   @override
   _TetapanState createState() => _TetapanState();
 }
@@ -30,7 +34,7 @@ class _TetapanState extends State<Tetapan> {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => TukarKataLaluan(),
+                        builder: (_) => TukarKataLaluan(widget.idpengguna),
                       ),
                     );
                   },
